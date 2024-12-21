@@ -15,3 +15,7 @@
    ```bash
    git clone -b cheklistServer https://github.com/igorft3/snippets.git && cd snippets && chmod +x setup_server.sh && sudo ./setup_server.sh
    ```
+
+## Update IMPORTANT
+- Изменить дефолтный port на рандомный.
+- Закрыть стандартный порт
