@@ -13,5 +13,5 @@
 
 1. Скачайте репозиторий и запустите скрипт одной командой:
    ```bash
-   git clone -b cheklistServer https://github.com/igorft3/snippets.git && cd setup-server && chmod +x setup_server.sh && sudo ./setup_server.sh
+   git clone -b cheklistServer https://github.com/igorft3/snippets.git && cd snippets && chmod +x setup_server.sh && sudo ./setup_server.sh
    ```
