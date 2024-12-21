@@ -69,5 +69,23 @@ net.ipv4.conf.default.rp_filter = 1
 EOF'
 sudo sysctl -p
 
+# Генерация случайного порта в диапазоне от 1024 до 65535
+NEW_PORT=$(shuf -i 1024-65535 -n 1)
+
+# Изменяем конфигурацию SSH для нового порта
+sudo sed -i "s/#Port 22/Port $NEW_PORT/" /etc/ssh/sshd_config
+
+# Включаем SSH, если не включен
+sudo systemctl enable ssh
+
+# Перезапускаем SSH для применения изменений
+sudo systemctl restart sshd
+
+# Оповещаем пользователя
+echo "SSH порт изменён на $NEW_PORT"
+
+# Открываем новый порт в UFW
+sudo ufw allow $NEW_PORT/tcp
+
 # Уведомление о завершении
 echo "Базовая настройка и защита сервера завершена."
