@@ -89,3 +89,8 @@ sudo ufw allow $NEW_PORT/tcp
 
 # Уведомление о завершении
 echo "Базовая настройка и защита сервера завершена."
+
+# Дальнейшие советы
+echo "А теперь ручками вот что сделай"
+echo "Добавление нового пользователя - sudo adduser <имя_пользователя>"
+echo "Запрет на вход для root-юзера по SSH PermitRootLogin no - sudo nano /etc/ssh/sshd_config"
