@@ -23,15 +23,16 @@ apt-get upgrade -y
 apt-get install -y fail2ban ufw
 
 # ========================
-# SSH (только порт)
+# SSH (замена порта)
 # ========================
 SSHD_CONFIG="/etc/ssh/sshd_config"
 
-if grep -q "^Port" "$SSHD_CONFIG"; then
-    sed -i "s/^Port.*/Port ${SSH_PORT}/" "$SSHD_CONFIG"
-elif grep -q "^#Port" "$SSHD_CONFIG"; then
-    sed -i "s/^#Port.*/Port ${SSH_PORT}/" "$SSHD_CONFIG"
-else
+# 1. Пытаемся заменить любую строку, начинающуюся с optional '#' и 'Port'
+# Регулярное выражение ^#?Port.* находит и "#Port 22", и "Port 22"
+sed -i "s/^#*Port.*/Port ${SSH_PORT}/" "$SSHD_CONFIG"
+
+# 2. Проверка: если замена не произошла (например, строки Port не было совсем), добавляем её
+if ! grep -q "^Port ${SSH_PORT}" "$SSHD_CONFIG"; then
     echo "Port ${SSH_PORT}" >> "$SSHD_CONFIG"
 fi
 
@@ -64,4 +65,4 @@ systemctl enable --now fail2ban
 
 echo "Done!"
 echo "SSH port: $SSH_PORT"
-echo "Change password - `sudo -i && passwd`"
+echo "Change password - \`sudo -i && passwd\`"
