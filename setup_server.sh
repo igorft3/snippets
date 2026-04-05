@@ -64,3 +64,4 @@ systemctl enable --now fail2ban
 
 echo "Done!"
 echo "SSH port: $SSH_PORT"
+echo "Change password - `sudo -i && passwd`"
