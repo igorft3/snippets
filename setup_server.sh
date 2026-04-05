@@ -1,8 +1,18 @@
 #!/bin/bash
 set -e
 
-SSH_PORT=${SSH_PORT:-22}
+# Генерация случайного порта (1024–65535), если не задан
+if [[ -z "${SSH_PORT:-}" ]]; then
+  while true; do
+    PORT=$((RANDOM % 64512 + 1024))
+    if ! ss -tln | awk '{print $4}' | grep -q ":${PORT}$"; then
+      SSH_PORT=$PORT
+      break
+    fi
+  done
+fi
 
+echo "Using SSH port: $SSH_PORT"
 echo "Start setup..."
 
 # Обновление системы
@@ -53,3 +63,4 @@ EOF
 systemctl enable --now fail2ban
 
 echo "Done!"
+echo "SSH port: $SSH_PORT"
