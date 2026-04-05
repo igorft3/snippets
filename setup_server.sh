@@ -27,14 +27,11 @@ apt-get install -y fail2ban ufw
 # ========================
 SSHD_CONFIG="/etc/ssh/sshd_config"
 
-# 1. Пытаемся заменить любую строку, начинающуюся с optional '#' и 'Port'
-# Регулярное выражение ^#?Port.* находит и "#Port 22", и "Port 22"
-sed -i "s/^#*Port.*/Port ${SSH_PORT}/" "$SSHD_CONFIG"
+# Удаляем ВСЕ строки с Port (включая закомментированные и с пробелами)
+sed -i '/^[#[:space:]]*Port[[:space:]]/d' "$SSHD_CONFIG"
 
-# 2. Проверка: если замена не произошла (например, строки Port не было совсем), добавляем её
-if ! grep -q "^Port ${SSH_PORT}" "$SSHD_CONFIG"; then
-    echo "Port ${SSH_PORT}" >> "$SSHD_CONFIG"
-fi
+# Добавляем новый порт в конец файла
+echo "Port ${SSH_PORT}" >> "$SSHD_CONFIG"
 
 systemctl restart ssh
 
